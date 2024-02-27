@@ -1,159 +1,167 @@
-// Heavily inspired by Atampy26's RPG system for an AI Dungeon
+// This project is licensed under the BSD 3-Clause license.
+// See the LICENSE file in the project root for more information.
 
 //–--------------------
 // Default stats
 //---------------------
 
 const defaultSats = {
-    act: 2,
-    destroy: 2,
-    create: 2,
-    observe: 2,
-    manipulate: 2,
-}
+    strength: 19,
+    dexterity: 19,
+    constitution: 15,
+    intelligence: 17,
+    wisdom: 13,
+    charisma: 13
+};
 
 const defaultSkills = {
-    talk: 3,
-    athlete: 3,
-    destroy: 3,
-    fight: 3,
-    make: 3,
-    repair: 3,
-    heal: 3,
-    discover: 3,
-    deduce: 3,
-    deceive: 3,
-    sneak: 3,
-    puppeteer: 3,
-    perfomance: 4
-}
+    athletics: 13,
+    acrobatics: 14,
+    sleightOfHand: 19,
+    stealth: 19,
+    arcana: 15,
+    history: 15,
+    investigation: 17,
+    nature: 17,
+    religion: 15,
+    animalHandling: 13,
+    insight: 14,
+    medicine: 13,
+    perception: 13,
+    survival: 13,
+    deception: 13,
+    intimidation: 13,
+    performance: 13,
+    persuasion: 13
+};
+
 
 //–--------------------
 // Action descriptions
 //---------------------
 
-const avaliableActions = {
-    "balance": ["Act", "Athlete"],
-    "make him": ["Manipulate", "Puppeteer"],
-    "make her": ["Manipulate", "Puppeteer"],
-    "make them": ["Manipulate", "Puppeteer"],
-    "force him": ["Manipulate", "Puppeteer"],
-    "force her": ["Manipulate", "Puppeteer"],
-    "cast": ["Manipulate", "Puppeteer"],
-    "force them": ["Manipulate", "Puppeteer"],
-    "make sure": ["Act", "Talk", true],
-    "make": ["Create", "Make"],
-    "destroy": ["Destroy", "Destroy"],
-    "attack": ["Destroy", "Fight"],
-    "fight": ["Destroy", "Fight"],
-    "slit": ["Destroy", "Fight"],
-    "battle": ["Destroy", "Fight"],
-    "bandage": ["Create", "Heal"],
-    "stab": ["Destroy", "Fight"],
-    "murder": ["Destroy", "Fight"],
-    "hit": ["Destroy", "Fight"],
-    "kill": ["Destroy", "Fight"],
-    "strike": ["Destroy", "Fight"],
-    "shoot": ["Destroy", "Fight"],
-    "ambush": ["Destroy", "Fight"],
-    "kidnap": ["Manipulate", "Sneak"],
-    "befriend": ["Act", "Talk"],
-    "threaten": ["Manipulate", "Puppeteer"],
-    "break": ["Destroy", "Destroy"],
-    "build": ["Create", "Make"],
-    "charm": ["Act", "Talk"],
-    "climb": ["Act", "Athlete"],
-    "conceal": ["Manipulate", "Deceive"],
-    "conclude": ["Observe", "Deduce"],
-    "deduce": ["Observe", "Deduce"],
-    "craft": ["Create", "Make"],
-    "crawl": ["Act", "Athlete"],
-    "deceive": ["Manipulate", "Deceive"],
-    "dive": ["Act", "Athlete"],
-    "drag": ["Act", "Athlete"],
-    "drive": ["Act", "Athlete"],
-    "ensnare": ["Act", "Athlete"],
-    "escape": ["Manipulate", "Sneak"],
-    "evade": ["Manipulate", "Sneak"],
-    "fix": ["Create", "Repair"],
-    "flip": ["Act", "Athlete"],
-    "grow": ["Create", "Make"],
-    "harvest": ["Create", "Make"],
-    "heal": ["Create", "Heal"],
-    "patch up": ["Create", "Heal"],
-    "restore": ["Create", "Heal"],
-    "hack": ["Manipulate", "Puppeteer"],
-    "investigate": ["Observe", "Discover", true],
-    "discover": ["Observe", "Discover"],
-    "jump": ["Act", "Athlete", true],
-    "know": ["Observe", "Deduce"],
-    "lasso": ["Act", "Athlete"],
-    "lie": ["Manipulate", "Deceive"],
-    "lift": ["Act", "Athlete"],
-    "pull": ["Act", "Athlete"],
-    "push": ["Act", "Athlete"],
-    "read": ["Observe", "Discover", true],
-    "rappel": ["Act", "Athlete"],
-    "restrain": ["Act", "Athlete"],
-    "ride": ["Act", "Athlete"],
-    "run from": ["Act", "Athlete"],
-    "run away": ["Act", "Athlete"],
-    "run": ["Act", "Athlete", true],
-    "walk": ["Act", "Athlete", true],
-    "search": ["Observe", "Discover"],
-    "find": ["Observe", "Discover"],
-    "sing": ["Act", "Talk"],
-    "speak": ["Act", "Talk", true],
-    "chat": ["Act", "Talk"],
-    "talk": ["Act", "Talk", true],
-    "say": ["Act", "Talk", true],
-    "slide": ["Act", "Athlete"],
-    "sneak": ["Manipulate", "Sneak"],
-    "steal": ["Manipulate", "Sneak"],
-    "swim": ["Act", "Athlete"],
-    "swing": ["Act", "Athlete"],
-    "tame": ["Manipulate", "Puppeteer"],
-    "tumble": ["Act", "Athlete"],
-    "unlock": ["Manipulate", "Puppeteer"],
-    "write": ["Create", "Perfomance"],
-    "play": ["Act", "Perfomance"],
-    "perform": ["Act", "Perfomance"],
-    "dj": ["Act", "Perfomance"],
-    "sing": ["Act", "Perfomance"]
+const availableActions = {
+    "balance": ["dexterity", "athletics"],
+    "make him": ["charisma", "deception"],
+    "make her": ["charisma", "deception"],
+    "make them": ["charisma", "deception"],
+    "force him": ["strength", "intimidation"],
+    "force her": ["strength", "intimidation"],
+    "cast": ["intelligence", "arcana"],
+    "force them": ["strength", "intimidation"],
+    "make sure": ["wisdom", "persuasion", true],
+    "make": ["intelligence", "craft"],
+    "destroy": ["strength", "sleightOfHand"],
+    "attack": ["strength", "athletics"],
+    "fight": ["strength", "athletics"],
+    "slit": ["dexterity", "stealth"],
+    "battle": ["strength", "athletics"],
+    "bandage": ["wisdom", "medicine"],
+    "stab": ["dexterity", "stealth"],
+    "murder": ["strength", "intimidation"],
+    "hit": ["strength", "athletics"],
+    "kill": ["strength", "intimidation"],
+    "strike": ["strength", "athletics"],
+    "shoot": ["dexterity", "sleightOfHand"],
+    "ambush": ["dexterity", "stealth"],
+    "kidnap": ["dexterity", "stealth"],
+    "befriend": ["charisma", "persuasion"],
+    "threaten": ["strength", "intimidation"],
+    "break": ["strength", "sleightOfHand"],
+    "build": ["intelligence", "craft"],
+    "charm": ["charisma", "persuasion"],
+    "climb": ["strength", "athletics"],
+    "conceal": ["dexterity", "stealth"],
+    "conclude": ["intelligence", "investigation"],
+    "deduce": ["intelligence", "investigation"],
+    "craft": ["intelligence", "craft"],
+    "crawl": ["dexterity", "stealth"],
+    "deceive": ["charisma", "deception"],
+    "dive": ["strength", "athletics"],
+    "drag": ["strength", "athletics"],
+    "drive": ["dexterity", "acrobatics"],
+    "ensnare": ["dexterity", "sleightOfHand"],
+    "escape": ["dexterity", "stealth"],
+    "evade": ["dexterity", "stealth"],
+    "fix": ["intelligence", "craft"],
+    "flip": ["dexterity", "acrobatics"],
+    "grow": ["wisdom", "nature"],
+    "harvest": ["wisdom", "nature"],
+    "heal": ["wisdom", "medicine"],
+    "patch up": ["wisdom", "medicine"],
+    "restore": ["wisdom", "medicine"],
+    "hack": ["intelligence", "arcana"],
+    "investigate": ["intelligence", "investigation", true],
+    "discover": ["intelligence", "investigation"],
+    "jump": ["strength", "athletics", true],
+    "know": ["intelligence", "history"],
+    "lasso": ["dexterity", "sleightOfHand"],
+    "lie": ["charisma", "deception"],
+    "lift": ["strength", "athletics"],
+    "pull": ["strength", "athletics"],
+    "push": ["strength", "athletics"],
+    "read": ["intelligence", "investigation", true],
+    "rappel": ["strength", "athletics"],
+    "restrain": ["strength", "athletics"],
+    "ride": ["dexterity", "acrobatics"],
+    "run from": ["dexterity", "acrobatics"],
+    "run away": ["dexterity", "acrobatics"],
+    "run": ["strength", "athletics", true],
+    "walk": ["dexterity", "acrobatics", true],
+    "search": ["intelligence", "investigation"],
+    "find": ["intelligence", "investigation"],
+    "sing": ["charisma", "performance"],
+    "speak": ["charisma", "persuasion", true],
+    "chat": ["charisma", "persuasion"],
+    "talk": ["charisma", "persuasion", true],
+    "say": ["charisma", "persuasion", true],
+    "slide": ["dexterity", "acrobatics"],
+    "sneak": ["dexterity", "stealth"],
+    "steal": ["dexterity", "sleightOfHand"],
+    "swim": ["strength", "athletics"],
+    "tame": ["wisdom", "animalHandling"],
+    "swing": ["strength", "athletics"],
+    "tumble": ["dexterity", "acrobatics"],
+    "unlock": ["dexterity", "sleightOfHand"],
+    "write": ["intelligence", "history"],
+    "play": ["charisma", "performance"],
+    "perform": ["charisma", "performance"],
+    "dj": ["charisma", "performance"],
+    "sing": ["charisma", "performance"]
 }
 
 const actionDescriptions = [
     ["completely fail to", "spectacularly fail to", "utterly fail to"], // 0
-    ["unsuccessfully try to", "fail to"],                               // 1
-    ["try to", "attempt to"],                                           // 2
-    [""],                                                               // 3
-    ["successfully"],                                                   // 4
-    ["masterfully", "professionally", "gracefully", "skilfully"]        // 5
-    [""]                                                                // Usual action
+    ["unsuccessfully try to", "fail to"], // 1
+    ["try to", "attempt to"], // 2
+    [""], // 3
+    ["successfully"], // 4
+    ["masterfully", "professionally", "gracefully", "skilfully"] // 5
+    [""] // Usual action
 ]
 
 const actionResultDescriptions = [
-    "spectacular fail!",                                                // 0
-    "fail!",                                                            // 1
-    "uncertain outcome!",                                               // 2
-    "",                                                                 // 3
-    "success!",                                                         // 4
-    "complete success!",                                                // 5
-    ""                                                                  // Usual action
+    "spectacular fail!", // 0
+    "fail!", // 1
+    "uncertain outcome!", // 2
+    "", // 3
+    "success!", // 4
+    "complete success!", // 5
+    "" // Usual action
 ]
 
-const expirienceDistribution = [
-    3,                                                                  // 0
-    3,                                                                  // 1
-    2,                                                                  // 2
-    2,                                                                  // 3
-    1,                                                                  // 4
-    1,                                                                  // 5
-    1,                                                                  // Usual action
+const experienceDistribution = [
+    3, // 0
+    3, // 1
+    2, // 2
+    2, // 3
+    1, // 4
+    1, // 5
+    1, // Usual action
 ]
 
 const maxTurn = 3; // Turns to show tips
-const maxLevel = 20;  // Max XP for a character
+const maxLevel = 20; // Max XP for a character
 const debug = true;
 
 //–--------------------
@@ -225,25 +233,25 @@ function turnIncrease() {
         state.turn = 0;
     }
 }
- 
-function actionResultHandler(roll, index, singleAction, keyword) {
-    actionDescription = actionDescriptions[index]  // Gets description from the array above
 
-    currentStat = avaliableActions[keyword][0].toLowerCase()
-    currentSkill = avaliableActions[keyword][1].toLowerCase()
+function actionResultHandler(roll, index, singleAction, keyword) {
+    actionDescription = actionDescriptions[index] // Gets description from the array above
+
+    currentStat = availableActions[keyword][0].toLowerCase()
+    currentSkill = availableActions[keyword][1].toLowerCase()
 
     debugLog("Current stat is " + currentStat);
     debugLog("Current skill is " + currentSkill);
 
     action = "\n>You " + actionDescription[randomNumber(actionDescription.length)] + " " + singleAction
-    message = "Roll: " + roll.toString() + " – " + " +" + expirienceDistribution[index] +
-              " XP for " + currentStat + " and "  + currentSkill
-    
+    message = "Roll: " + roll.toString() + " – " + " +" + experienceDistribution[index] +
+        " XP for " + currentStat + " and " + currentSkill
+
     if (state.stats[currentStat] < maxLevel) {
-        state.stats[currentStat] += expirienceDistribution[index] / 16
+        state.stats[currentStat] += experienceDistribution[index] / 16
     }
     if (state.skills[currentSkill] < maxLevel) {
-        state.skills[currentSkill] += expirienceDistribution[index] / 8
+        state.skills[currentSkill] += experienceDistribution[index] / 8
     }
 
     debugLog(action)
@@ -253,17 +261,17 @@ function actionResultHandler(roll, index, singleAction, keyword) {
 }
 
 function simpleActionHandler(singleAction, keyword) {
-    currentStat = avaliableActions[keyword][0].toLowerCase()
-    currentSkill = avaliableActions[keyword][1].toLowerCase()
+    currentStat = availableActions[keyword][0].toLowerCase()
+    currentSkill = availableActions[keyword][1].toLowerCase()
 
     action = "\n>You " + singleAction
-    message = "+1 XP for " + currentStat + " and "  + currentSkill
+    message = "+1 XP for " + currentStat + " and " + currentSkill
 
     if (state.stats[currentStat] < maxLevel) {
-        state.stats[currentStat] += expirienceDistribution[6] / 16
+        state.stats[currentStat] += experienceDistribution[6] / 16
     }
     if (state.skills[currentSkill] < maxLevel) {
-        state.skills[currentSkill] += expirienceDistribution[6] / 8
+        state.skills[currentSkill] += experienceDistribution[6] / 8
     }
 
     debugLog(action)
@@ -275,11 +283,11 @@ function simpleActionHandler(singleAction, keyword) {
 function singleActionHandler(singleAction, keyword) {
     debugLog("Single action: " + singleAction + " and keyword is: " + keyword)
 
-    var currentStat = avaliableActions[keyword][0].toLowerCase()  // Name of the stat of this action
-    var roll = Math.round((randomNumber(19)+ 1) + (state.stats[currentStat] - 8/state.stats[currentStat] -1))  // Weird-weird formula
+    var currentStat = availableActions[keyword][0].toLowerCase() // Name of the stat of this action
+    var roll = Math.round((randomNumber(19) + 1) + (state.stats[currentStat] - 8 / state.stats[currentStat] - 1)) // Weird-weird formula
     debugLog("Roll: " + roll.toString())
 
-    if (avaliableActions[keyword][2]) { // Means it's a simple action like "Say". It doesn't require dependance on skill.
+    if (availableActions[keyword][2]) { // Means it's a simple action like "Say". It doesn't require dependance on skill.
         debugLog("This action is a usual one")
         return simpleActionHandler(singleAction, keyword); // Success
     }
@@ -301,15 +309,15 @@ function singleActionHandler(singleAction, keyword) {
 }
 
 function actionHandler(action) {
-    if (action != undefined && !action.toLowerCase().includes("you")) {  // Story mode
+    if (action != undefined && !action.toLowerCase().includes("you")) { // Story mode
         return ["\n> " + action, tipsAndStats()]
     }
 
     action = action.substring(7); // Substring of 7, because start of the line look like: \n> You
-                                  // That was, actualy, really confusing
+    // That was, actualy, really confusing
     debugLog("Got actions: " + action);
-  
-    for (keyword of Object.keys(avaliableActions)) {
+
+    for (keyword of Object.keys(availableActions)) {
         if (action != undefined && action.toLowerCase().startsWith(keyword)) {
             return singleActionHandler(action, keyword);
         }
@@ -326,11 +334,11 @@ function tipsAndStats() {
         case maxTurn:
             state.turn = 0; // It'll keep going to the default case
         default:
-            tips = ["Need to get better at a specific skill? Do that skill more often.", 
-                    "XP is earned whenever you perform an action. Fails teach more than successes.", 
-                    "Every so often, you'll see your skills shown in a big long paragraph. The AI sees this too, so if it sounds harsh the AI might be harsh as well!", 
-                    `Permfomance is a vital skill for a musician. You're ${checkSkillDescriptor('perfomance')} at it.`
-                ];
+            tips = ["Need to get better at a specific skill? Do that skill more often.",
+                "XP is earned whenever you perform an action. Fails teach more than successes.",
+                "Every so often, you'll see your skills shown in a big long paragraph. The AI sees this too, so if it sounds harsh the AI might be harsh as well!",
+                `Permfomance is a vital skill for a musician. You're ${checkSkillDescriptor('perfomance')} at it.`
+            ];
             return tips[randomNumber(tips.length - 1)]
     }
 }
@@ -340,23 +348,26 @@ function tipsAndStats() {
 //---------------------
 
 const modifier = (text) => {
-    let modifiedText = text;  // User input
+    let modifiedText = text; // User input
 
-    if (!state.initialised) {  // It's a custom value
+    if (!state.initialised) { // It's a custom value
         initialise();
-        return {text: modifiedText}
+        return {
+            text: modifiedText
+        }
     }
 
     if (state.initialised) {
         turnIncrease();
-        parsedAction = actionHandler(modifiedText);  // User perfomed action with a custom RPG output style
+        parsedAction = actionHandler(modifiedText); // User perfomed action with a custom RPG output style
 
-        actionText = parsedAction[0];  // Text for the input
-        messageText = "" + parsedAction[1];  // Tips'n'stuff
-        
+        actionText = parsedAction[0]; // Text for the input
+        messageText = "" + parsedAction[1]; // Tips'n'stuff
+
         state.message = messageText;
-        return {text: actionText}
+        return {
+            text: actionText
+        }
     }
 }
 
-modifier(text)

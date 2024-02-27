@@ -1,6 +1,6 @@
 # AI Dungeon 5E
 
-This an I/O modifier for AI Dungeon based on je09's RPG rewrite of Atampy26's code based on D&D 5E. All actions have been remapped with a new set of skills and sets.
+This an I/O modifier for AI Dungeon based on je09's RPG rewrite of Atampy26's code that uses D&D 5E skills and stats.
 
 ## Authors
 

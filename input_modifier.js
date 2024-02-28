@@ -175,6 +175,16 @@ const actionDescriptions = [
     [""] // Usual action
 ]
 
+const castActions = [
+    "cast ",
+    "conjure ",
+    "charm ",
+    "curse ",
+    "hex ",
+    "bewitch ",
+    "enchant "
+]
+
 const actionResultDescriptions = [
     "spectacular fail!", // 0
     "fail!", // 1
@@ -395,26 +405,27 @@ function tipsAndStats() {
 //---------------------
 
 const modifier = (text) => {
+
     let modifiedText = text; // User input
 
     if (!state.initialised) { // It's a custom value
         initialise();
+        const lowered = text.toLowerCase()
+        for (casting in castActions) {
+            for (spellName in defaultSpells) {
+                if (lowered.includes(casting + spellName)) {
+                    modifiedText = text + '\n' + casting + spellName + ', ' + spells[spellName]
+                }
+            }
+        }
+
         return {
             text: modifiedText
         }
     }
 
-    if (state.initialised) {
-        turnIncrease();
-        parsedAction = actionHandler(modifiedText); // User perfomed action with a custom RPG output style
-
-        actionText = parsedAction[0]; // Text for the input
-        messageText = "" + parsedAction[1]; // Tips'n'stuff
-
-        state.message = messageText;
-        return {
-            text: actionText
-        }
-    }
+    return text
 }
 
+// Don't modify this part
+modifier(text)

@@ -35,6 +35,41 @@ const defaultSkills = {
     persuasion: 13
 };
 
+const defaultInventory = [
+    {
+        name: 'staff',
+        quantity: 1
+    },
+    {
+        name: 'spellbook',
+        quantity: 1
+    }
+];
+
+
+const defaultSpells = {
+    'Acid Splash': 'Create a splash of acid that targets a creature within 60 feet.',
+    'Blade Ward': 'Protect yourself from damage for a brief moment.',
+    'Chill Touch': 'Chill a target, preventing it from healing and dealing necrotic damage.',
+    'Control Flames': 'Manipulate fire to extinguish or ignite flames.',
+    'Create Bonfire': 'Create a magical bonfire that damages creatures in its area.',
+    'Mage Hand': 'Summon an invisible hand to manipulate objects within 30 feet.',
+    'Mending': 'Repair small objects or seams.',
+    'Minor Illusion': 'Create a simple visual or auditory illusion.',
+    'Prestidigitation': 'Perform minor magical tricks and effects.',
+    'Ray of Frost': 'Shoot a freezing ray at a target, slowing its movement.',
+    'Shield': 'Raise a magical barrier to protect yourself from attacks.',
+    'Magic Missile': 'Unerring darts of force that automatically hit your target.',
+    'Sleep': 'Put creatures to sleep within a certain area.',
+    'Charm Person': 'Make someone friendly towards you.',
+    'Find Familiar': 'Summon a magical creature to aid you.',
+    'Misty Step': 'Teleport instantly to a nearby location.',
+    'Mirror Image': 'Create illusory duplicates of yourself to confuse attackers.',
+    'Web': 'Create sticky webs to trap enemies.',
+    'Invisibility': 'Turn invisible for a period of time.',
+    'Scorching Ray': 'Fire multiple rays of flame at different targets.'
+};
+
 
 //–--------------------
 // Action descriptions
@@ -161,6 +196,7 @@ const experienceDistribution = [
 ]
 
 const maxTurn = 3; // Turns to show tips
+const showtips = false;
 const maxLevel = 20; // Max XP for a character
 const debug = true;
 
@@ -218,11 +254,13 @@ function randomNumber(max) {
 function initialise() {
     // Set default stats, skills and turns
     debugLog("Initilizing first game")
+
     state.stats = defaultSats;
     state.skills = defaultSkills;
-
+    state.inventory = defaultInventory;
     state.turn = 0;
     state.initialised = true;
+    state.spells = defaultSpells;
 
     debugLog("stats " + state.stats);
 }
@@ -309,7 +347,11 @@ function singleActionHandler(singleAction, keyword) {
 }
 
 function actionHandler(action) {
+
     if (action != undefined && !action.toLowerCase().includes("you")) { // Story mode
+        if (!showtips) {
+            return ["\n>You " + action];
+        }
         return ["\n> " + action, tipsAndStats()]
     }
 
@@ -321,6 +363,10 @@ function actionHandler(action) {
         if (action != undefined && action.toLowerCase().startsWith(keyword)) {
             return singleActionHandler(action, keyword);
         }
+    }
+
+    if (!showtips) {
+        return ["\n>You " + action];
     }
 
     return ["\n>You " + action, tipsAndStats()]; // If no actions where found

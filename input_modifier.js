@@ -211,40 +211,41 @@ function debugLog(message) {
 }
 
 function checkSkill(skill) {
-    if (state.skills[skill] <= 3) {
-        return 'incompetent'
+    if (state.skills[skill] <= 7) {
+        return 'incompetent';
     }
-    if (state.skills[skill] > 3 && state.skills[skill] < 5) {
-        return 'a novice'
+    if (state.skills[skill] > 7 && state.skills[skill] < 10) {
+        return 'a novice';
     }
-    if (state.skills[skill] >= 5 && state.skills[skill] < 6) {
-        return 'competent'
+    if (state.skills[skill] >= 10 && state.skills[skill] < 13) {
+        return 'competent';
     }
-    if (state.skills[skill] >= 6 && state.skills[skill] < 7) {
-        return 'capable'
+    if (state.skills[skill] >= 13 && state.skills[skill] < 16) {
+        return 'capable';
     }
-    if (state.skills[skill] >= 7) {
-        return 'good'
+    if (state.skills[skill] >= 16) {
+        return 'good';
     }
 }
 
 function checkSkillDescriptor(skill) {
-    if (state.skills[skill] <= 3) {
-        return 'poor'
+    if (state.skills[skill] <= 7) {
+        return 'poor';
     }
-    if (state.skills[skill] > 3 && state.skills[skill] < 5) {
-        return 'fair'
+    if (state.skills[skill] > 7 && state.skills[skill] < 10) {
+        return 'fair';
     }
-    if (state.skills[skill] >= 5 && state.skills[skill] < 6) {
-        return 'okay'
+    if (state.skills[skill] >= 10 && state.skills[skill] < 13) {
+        return 'okay';
     }
-    if (state.skills[skill] >= 6 && state.skills[skill] < 7) {
-        return 'capable'
+    if (state.skills[skill] >= 13 && state.skills[skill] < 16) {
+        return 'capable';
     }
-    if (state.skills[skill] >= 7) {
-        return 'good'
+    if (state.skills[skill] >= 16) {
+        return 'good';
     }
 }
+
 
 function randomNumber(max) {
     // From 0 to max
